@@ -28,4 +28,9 @@ export default defineNuxtConfig({
   tailwindcss: {
     cssPath: '~/assets/sass/general.scss',
   },
+
+  server: {
+    host: "0.0.0.0",
+    port: process.env.PORT || 3000,
+  },
 })
