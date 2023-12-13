@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.times {
+  font-family: 'Times New Roman';
+}
+
+.lato {
+  font-family: 'Lato',Arial,Helvetica,sans-serif !important;
+}
+
+.header {
+  &-icon {
+    border-radius: 50%;
+    height: 38px;
+    width: 38px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    background: -moz-linear-gradient(45deg,  rgba(138,200,217,1) 0%, rgba(160,158,223,1) 100%);
+    background: -webkit-linear-gradient(45deg,  rgba(138,200,217,1) 0%,rgba(160,158,223,1) 100%);
+    background: linear-gradient(45deg,  rgba(138,200,217,1) 0%,rgba(160,158,223,1) 100%);
+  }
+}
