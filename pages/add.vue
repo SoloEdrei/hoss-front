@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     async submitEmail() {
-      const response = await $fetch('http://localhost:8000/api/employees', {
+      const response = await $fetch(`${this.$config.public.apiUrl}employees`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
