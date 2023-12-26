@@ -2,16 +2,18 @@
   <div class="w-100 h-100 bg-white p-[20px]">
     <form @submit.prevent="submitEmail">
       <div class="grid grid-cols-3 gap-6 px-5 py-4">
-          <CrudInput name="First Name" field_type="text" v-model="employees.first_name"/>
-          <CrudInput name="Photo (Only URL)" field_type="text" v-model="employees.photo"/>
-          <CrudInput name="Middle Name" field_type="text" v-model="employees.middle_name"/>
-          <CrudInput name="Last Name" field_type="text" v-model="employees.last_name"/>
-          <CrudInput name="Role" field_type="text" v-model="employees.role"/>
-          <div class="grid grid-cols-2 gap-2">
-            <CrudSwitch name="Valid Driver" field_type="boolean" v-model="employees.valid_driver"/>
-            <CrudSwitch name="Union" field_type="boolean" v-model="employees.union"/>
-          </div>
-        <input type="submit" class="mx-1 rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" value="Submit"/>
+        <CrudInput name="First Name" field_type="text" v-model="employees.first_name"/>
+        <CrudInput name="Middle Name" field_type="text" v-model="employees.middle_name"/>
+        <CrudInput name="Last Name" field_type="text" v-model="employees.last_name"/>
+        <CrudInput name="Role" field_type="text" v-model="employees.role"/>
+        <CrudInput name="Photo (Only URL)" field_type="text" v-model="employees.photo"/>
+        <div class="grid grid-cols-2 gap-2">
+          <CrudSwitch name="Valid Driver" field_type="boolean" v-model="employees.valid_driver"/>
+          <CrudSwitch name="Union" field_type="boolean" v-model="employees.union"/>
+        </div>
+        <input type="submit"
+               class="mx-1 rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+               value="Submit"/>
       </div>
     </form>
   </div>

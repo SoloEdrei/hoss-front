@@ -20,6 +20,9 @@
                   <template v-else-if="column.type === 'qr_code'">
                     <CrudQrcode :qr_code="employee[column.key]" />
                   </template>
+                  <template v-else-if="column.type === 'boolean'">
+                    {{ employee[column.key] ? 'Yes' : 'No' }}
+                  </template>
                   <template v-else>
                     {{ employee[column.key] }}
                   </template>
@@ -61,8 +64,8 @@ const tableColumns = [
   { key: 'middle_name', type: 'text' },
   { key: 'last_name', type: 'text' },
   { key: 'role', type: 'text' },
-  { key: 'union', type: 'text' },
-  { key: 'valid_driver', type: 'text' },
+  { key: 'union', type: 'boolean' },
+  { key: 'valid_driver', type: 'boolean' },
 ];
 </script>
 
