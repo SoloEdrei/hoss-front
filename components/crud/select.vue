@@ -1,69 +1,91 @@
 <template>
-  <div>
-    <Listbox as="div" v-model="selected">
-      <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900">{{ name }}</ListboxLabel>
-      <div class="relative mt-2">
-        <ListboxButton class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          <span class="block truncate">{{ selected.name }}</span>
-          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-          <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-        </span>
-        </ListboxButton>
+  <div class="">
+    <HeadlessListbox v-model="selectedPerson" :model-value="selectedPerson" @update:modelValue="value => emit('update:modelValue', value)" by="id">
+      <HeadlessListboxLabel class="block text-sm font-medium leading-6 text-gray-900">{{name}}</HeadlessListboxLabel>
+      <div class="relative mt-1">
+        <HeadlessListboxButton
+            class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+        >
+          <span class="block truncate">{{ selectedPerson.name }}</span>
+          <span
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+          >
+              <ChevronUpDownIcon
+                  class="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+              />
+            </span>
+        </HeadlessListboxButton>
 
-        <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-          <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            <ListboxOption as="template" v-for="person in people" :key="person.id" :value="person" v-slot="{ active, selected }">
-              <li :class="[active ? 'bg-indigo-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ person.name }}</span>
-
-                <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                <CheckIcon class="h-5 w-5" aria-hidden="true" />
-              </span>
+        <transition
+            leave-active-class="transition duration-100 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+          <HeadlessListboxOptions
+              class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          >
+            <HeadlessListboxOption
+                v-for="person in people"
+                v-slot="{ active, selected }"
+                :key="person.name"
+                :value="person"
+                as="template"
+            >
+              <li
+                  :class="[
+                    active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
+                    'relative cursor-default select-none py-2 pl-10 pr-4',
+                  ]"
+              >
+                  <span
+                      :class="[
+                      selected ? 'font-medium' : 'font-normal',
+                      'block truncate',
+                    ]"
+                  >{{ person.name }}</span>
+                <span
+                    v-if="selected"
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
+                >
+                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                  </span>
               </li>
-            </ListboxOption>
-          </ListboxOptions>
+            </HeadlessListboxOption>
+          </HeadlessListboxOptions>
         </transition>
       </div>
-    </Listbox>
+    </HeadlessListbox>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
-import {Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions} from "@headlessui/vue";
-import {CheckIcon, ChevronUpDownIcon} from "@heroicons/vue/24/solid";
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  property: {
+    type: String,
+    required: false,
+  },
+  modelValue: {
+    type: Object,
+    required: false,
+  },
+  data: {
+    type: Array,
+    required: false,
+  },
+})
 
-export default {
-  name: 'App',
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-  components: {
-    Listbox,
-    ListboxButton,
-    ListboxLabel,
-    ListboxOption,
-    ListboxOptions,
-    CheckIcon,
-    ChevronUpDownIcon,
-  },
-  setup() {
-    const people = [
-      { id: 1, name: 'Durward Reynolds', unavailable: false },
-      { id: 2, name: 'Kenton Towne', unavailable: false },
-      { id: 3, name: 'Therese Wunsch', unavailable: false },
-      { id: 4, name: 'Benedict Kessler', unavailable: false },
-      { id: 5, name: 'Katelyn Rohan', unavailable: false },
-    ]
-    const selected = ref(people[0])
+const selectedPerson = ref(props.modelValue)
 
-    return {
-      people,
-      selected,
-    }
-  },
-}
+const people = ref(props.data)
+
+const emit = defineEmits(['update:modelValue'])
+
 </script>

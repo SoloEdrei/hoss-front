@@ -2,7 +2,11 @@
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-headlessui'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-headlessui', "@pinia/nuxt"],
+
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
 
   // @ts-ignore
   runtimeConfig: {

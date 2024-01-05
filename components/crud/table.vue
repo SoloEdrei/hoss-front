@@ -11,7 +11,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-200" v-if="employees.length > 0">
               <tr v-for="employee in employees" :key="employee.email">
                 <td v-for="column in tableColumns" :key="column.key" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <template v-if="column.type === 'image'">
@@ -32,6 +32,13 @@
                 </td>
               </tr>
             </tbody>
+            <tbody class="divide-y divide-gray-200" v-else>
+              <tr>
+                <td colspan="10" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                  No employees found. Try another filter combination or <NuxtLink to="/add" class="text-indigo-600 hover:text-indigo-900">add a new employee</NuxtLink>.
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -42,6 +49,21 @@
 <script setup>
 import CrudQrcode from '@/components/crud/qrcode.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useFiltersStore } from '~/stores/filtersStore'
+const runtimeConfig = useRuntimeConfig();
+
+
+const updatable = ref(useFiltersStore().updatable);
+const filters = ref(useFiltersStore().filters);
+
+watch(() => useFiltersStore().updatable, (newStatus) => {
+  if (newStatus) {
+
+    getEmployees('?'+useFiltersStore().filters);
+
+    useFiltersStore().updateFormData(false);
+  }
+});
 
 const tableHeaders = [
   { key: 'id', label: 'Employee ID' },
@@ -67,26 +89,18 @@ const tableColumns = [
   { key: 'union', type: 'boolean' },
   { key: 'valid_driver', type: 'boolean' },
 ];
-</script>
 
-<script>
-export default {
-  name: 'App',
-  data() {
-    return {
-      employees: [],
-    };
-  },
-  components: {
-    CrudQrcode,
-  },
-  methods: {
-    async getEmployees() {
-      this.employees = await $fetch(`${this.$config.public.apiUrl}employees`);
-    },
-  },
-  mounted() {
-    this.getEmployees();
-  },
+const employees = ref([]);
+
+const getEmployees = async (filters) => {
+  const apiUrl = runtimeConfig.public.apiUrl;
+
+  employees.value = await $fetch(`${apiUrl}employees${filters}`);
 };
+
+onMounted(() => {
+  getEmployees('');
+  useFiltersStore().updateFormData(false);
+
+});
 </script>
